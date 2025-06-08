@@ -1,6 +1,7 @@
 package com.inventoryapp.service;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.inventoryapp.dto.LoginRequest;
 import com.inventoryapp.dto.RegisterRequest;
 import com.inventoryapp.dto.UserResponse;
 import com.inventoryapp.entity.AuthProvider;
@@ -72,6 +73,20 @@ public class AuthService {
                 .email(userSaved.getEmail())
                 .name(userSaved.getUsername())
                 .profilePicture(userSaved.getProfilePicture())
+                .build();
+    }
+
+    public UserResponse login(LoginRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("Email o contraseña inválidos"));
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new IllegalArgumentException("Email o contraseña inválidos");
+        }
+
+        return UserResponse.builder()
+                .email(user.getEmail())
+                .name(user.getUsername())
+                .profilePicture(user.getProfilePicture())
                 .build();
     }
 }

@@ -1,6 +1,6 @@
 package com.inventoryapp.controller;
 
-import com.inventoryapp.dto.GoogleTokenRequest;
+import com.inventoryapp.dto.LoginRequest;
 import com.inventoryapp.dto.RegisterRequest;
 import com.inventoryapp.dto.UserResponse;
 import com.inventoryapp.service.AuthService;
@@ -32,5 +32,12 @@ public class AuthController {
     ) {
         UserResponse user = authService.authenticateWithGoogle(token);
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> login(
+            @RequestBody @Valid final LoginRequest request
+    ) {
+        return ResponseEntity.ok(authService.login(request));
     }
 }
