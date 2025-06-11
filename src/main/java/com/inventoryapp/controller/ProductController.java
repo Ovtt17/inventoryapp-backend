@@ -17,26 +17,35 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest) {
-        return ResponseEntity.ok(productService.createProduct(productRequest));
+    public ResponseEntity<Product> createProduct(
+            @RequestBody @Valid ProductRequest productRequest,
+            @RequestHeader("X-User-Email") String email
+    ) {
+        return ResponseEntity.ok(productService.createProduct(productRequest, email));
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<List<Product>> getAllProducts(
+            @RequestHeader("X-User-Email") String email
+    ) {
+        return ResponseEntity.ok(productService.getAllProducts(email));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(
             @PathVariable Long id,
-            @RequestBody @Valid ProductRequest productRequest
+            @RequestBody @Valid ProductRequest productRequest,
+            @RequestHeader("X-User-Email") String email
     ) {
-        return ResponseEntity.ok(productService.updateProduct(id, productRequest));
+        return ResponseEntity.ok(productService.updateProduct(id, productRequest, email));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
+    public ResponseEntity<Void> deleteProduct(
+            @PathVariable Long id,
+            @RequestHeader("X-User-Email") String email
+    ) {
+        productService.deleteProduct(id, email);
         return ResponseEntity.noContent().build();
     }
 }
