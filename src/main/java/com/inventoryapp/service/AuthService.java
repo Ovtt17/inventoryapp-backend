@@ -71,7 +71,7 @@ public class AuthService {
 
         return UserResponse.builder()
                 .email(userSaved.getEmail())
-                .name(userSaved.getUsername())
+                .name(userSaved.getName())
                 .profilePicture(userSaved.getProfilePicture())
                 .build();
     }
