@@ -33,4 +33,7 @@ public class Product {
     private int stock;
 
     private String category;
+
+    @Column(nullable = false)
+    private String userEmail;
 }
