@@ -8,6 +8,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Table;
 import lombok.*;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @Builder
@@ -35,5 +37,5 @@ public class Product {
     private String category;
 
     @Column(nullable = false)
-    private String userEmail;
+    private UUID userId;
 }
