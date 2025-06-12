@@ -2,9 +2,11 @@ package com.inventoryapp.dto;
 
 import lombok.Builder;
 
+import java.util.UUID;
+
 @Builder
 public record UserResponse(
-        Long id,
+        UUID id,
         String email,
         String name,
         String profilePicture
