@@ -10,8 +10,6 @@ import com.inventoryapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -27,9 +25,7 @@ public class AuthService {
         String picture = (String) payload.get("picture");
         String subject = payload.getSubject();
 
-        Optional<User> existingUser = userRepository.findByEmail(email);
-
-        existingUser.orElseGet(() -> {
+        User user = userRepository.findByEmail(email).orElseGet(() -> {
             User newUser = User.builder()
                     .email(email)
                     .username(subject)
@@ -42,15 +38,13 @@ public class AuthService {
             return userRepository.save(newUser);
         });
 
-        User user = existingUser.orElseThrow(() -> new RuntimeException("User not found"));
-
         return UserResponse.builder()
+                .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getName())
                 .profilePicture(user.getProfilePicture())
                 .build();
     }
-
     public UserResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("Email already registered");
@@ -70,6 +64,7 @@ public class AuthService {
         User userSaved = userRepository.save(user);
 
         return UserResponse.builder()
+                .id(user.getId())
                 .email(userSaved.getEmail())
                 .name(userSaved.getName())
                 .profilePicture(userSaved.getProfilePicture())
@@ -84,6 +79,7 @@ public class AuthService {
         }
 
         return UserResponse.builder()
+                .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getUsername())
                 .profilePicture(user.getProfilePicture())
